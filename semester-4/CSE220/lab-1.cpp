@@ -6,9 +6,10 @@ using namespace std;
 
 const int mod = 1e9+7;
 
-/* Task-1 */
+
+
+/* Task-1 start from here */
 /* const int NONE = INT_MIN; */
-/**/
 /* void  mergeLineup(array<int, 5>& arr1, array<int, 5>& arr2) { */
 /*     array<int, 5> result; */
 /*     int n = arr1.size(); */
@@ -29,23 +30,26 @@ const int mod = 1e9+7;
 /**/
 /*     return 0; */
 /* } */
+/* Task-1 end here  */
 
 
-/* Task-2 */
-
-
+/* Task-2 start from here */
 /* void discardCards(vector<int>& cards, int t) { */
-/*     int count = 0; */
-/*     for (int i = 0; i < cards.size(); ++i) { */
-/*         if (cards[i] == t) { */
-/*             ++count; */
-/*             if (count % 2 == 0) { */
-/*                 cards[i] = 0; */
-/*             } */
-/*         } */
+/**/
+/*     vector<int> result; */
+/*     bool check=false; */
+/**/
+/*     for (int &card : cards) { */
+/*         if (card == t) check=!check; */
+/**/
+/*         if (!check || card != t) result.push_back(card); */
 /*     } */
-/*     for(auto i:cards)cout<<i<<" "; */
+/**/
+/*     while (result.size() < cards.size()) result.push_back(0); */
+/**/
+/*     for(auto &i:result)cout<<i<<" "; */
 /*     cout<<endl; */
+/**/
 /* } */
 /**/
 /* signed main(void) { */
@@ -57,11 +61,10 @@ const int mod = 1e9+7;
 /**/
 /*     return 0; */
 /* } */
+/* Task-2 end here  */
 
 
-/* Task-3 */
-
-
+/* Task-3 start from here  */
 /* vector<int> decrypt_matrix(const vector<vector<int>>& matrix) { */
 /**/
 /*     int rows = matrix.size(); */
@@ -103,10 +106,13 @@ const int mod = 1e9+7;
 /*     return 0; */
 /**/
 /* } */
+/* Task-3 end here  */
 
-/* Task-4 */
 
 
+
+
+/* Task-4 start from here */
 /* void solution(vector<vector<int>> &matrix){ */
 /**/
 /*     int rows = matrix.size(); */
@@ -133,9 +139,6 @@ const int mod = 1e9+7;
 /*     } */
 /**/
 /* } */
-/**/
-/**/
-/**/
 /* signed main(void){ */
 /**/
 /*     vector<vector<int>> matrix = { */
@@ -145,7 +148,7 @@ const int mod = 1e9+7;
 /*         {2, 1, 3, 4, 0}, */
 /*         {1, 4, 2, 8, 6} */
 /*     }; */
-/*     vector<vector<int>> matrix={ */
+/*     vector<vector<int>> matrix2={ */
 /*         {3, 8, 4, 6, 1}, */
 /*         {7, 2, 1, 9, 3}, */
 /*         {9, 0, 7, 5, 8}, */
@@ -153,22 +156,20 @@ const int mod = 1e9+7;
 /*     }; */
 /**/
 /*     solution(matrix); */
+/*     cout<<"Matrix-2"<<endl; */
+/*     solution(matrix2); */
 /* } */
-/**/
+/* Task-4 end here  */
 
 
 
-/* Task-5 */
 
-
+/* Task-5 start from here  */
 /* void row_rotation(int exam_week, vector<vector<string>> &seat_status) { */
 /*     int rows = seat_status.size(); */
 /*     int cols = seat_status[0].size(); */
 /*     int rotations = exam_week % rows; */
 /*     rotations-=1; */
-/**/
-/**/
-/**/
 /*     vector<vector<string>> new_seat_status(rows, vector<string>(cols)); */
 /**/
 /*     for (int i = 0; i < rows; ++i) { */
@@ -188,32 +189,6 @@ const int mod = 1e9+7;
 /*             } */
 /*         } */
 /*     } */
-/*     int rows = seat_status.size(); */
-/*     int cols = seat_status[0].size(); */
-/*     int rotations = exam_week % rows; */
-/**/
-/*     for (int r = 0; r < rotations-1; ++r) { */
-/*         vector<string> temp = seat_status[rows - 1]; */
-/*         for (int i = rows - 1; i > 0; --i) { */
-/*             seat_status[i] = seat_status[i - 1]; */
-/*         } */
-/*         seat_status[0] = temp; */
-/*     } */
-/*     for (const auto &row : seat_status) { */
-/*         for (const auto &seat : row) { */
-/*             cout << seat << " "; */
-/*         } */
-/*         cout << endl; */
-/*     } */
-/*     for (int i = 0; i < rows; ++i) { */
-/*         for (int j = 0; j < cols; ++j) { */
-/*             if (seat_status[i][j] == "AA") { */
-/*                 cout << "Your friend AA will be on row " << i + 1 << "." << endl; */
-/*                 return; */
-/*             } */
-/*         } */
-/*     } */
-/**/
 /* } */
 /**/
 /**/
@@ -231,64 +206,91 @@ const int mod = 1e9+7;
 /**/
 /*     row_rotation(exam_week,seat_status); */
 /* } */
+/* Task-5 end here */
 
 
-/* Task-6 */
+/* Task-6 start here */
+void compress_matrix(vector<vector<int>>&mat){
+    int r=mat.size();
+    int c=mat[0].size();
 
-
-
-void isSurvived(const vector<vector<int>>& arena) {
-    int rows = arena.size();
-    int cols = arena[0].size();
-    int totalPoints = 0;
-
-    vector<pair<int, int>> directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-
-    for (int i = 0; i < rows; ++i) {
-        for (int j = 0; j < cols; ++j) {
-            if (arena[i][j] % 50 == 0 && arena[i][j] != 0) {
-                for (const auto& dir : directions) {
-                    int newRow = i + dir.first;
-                    int newCol = j + dir.second;
-                    if (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < cols && arena[newRow][newCol] == 2) {
-                        totalPoints += 2;
-                    }
-                }
-            }
+    vector<vector<int>> result(r>>1,vector<int> (c>>1,0));
+    for(int i=0;i<r;i++){
+        for(int j=0;j<c;j++){
+            result[i>>1][j>>1]+=mat[i][j];
         }
     }
-
-    cout << "Points Gained: " << totalPoints << ". ";
-    if (totalPoints >= 10) {
-        cout << "Your team has survived the game." << endl;
-    } else {
-        cout << "Your team is out." << endl;
+    for(auto &i:result){
+        for(int &j:i)cout<<j<<" ";
+        cout<<endl;
     }
 }
-
-
-
 
 signed main(void){
 
-    vector<vector<int>> arena1 = {
-        {0, 2, 2, 0},
-        {50, 1, 2, 0},
-        {2, 2, 2, 0},
-        {1, 100, 2, 0}
+    vector<vector<int>> mat={ 
+        {1, 2, 3, 4},
+        {5, 6, 7, 8},
+        {1, 3, 5, 2},
+        {-2 ,0 ,6 ,-3}
     };
-    vector<vector<int>> arena2 = {
-        {0, 2, 2, 0, 2},
-        {1, 50, 2, 1, 100},
-        {2, 2, 2, 0, 2},
-        {0, 200, 2, 0, 0}
-    };
-
-    isSurvived(arena1);
-    isSurvived(arena2);
-
+    compress_matrix(mat);
     return 0;
 }
+/* Task-6 end here */
+
+
+/* Task-7 start from here */
+/* void isSurvived(const vector<vector<int>>& arena) { */
+/*     int rows = arena.size(); */
+/*     int cols = arena[0].size(); */
+/*     int totalPoints = 0; */
+/**/
+/*     vector<pair<int, int>> directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}}; */
+/**/
+/*     for (int i = 0; i < rows; ++i) { */
+/*         for (int j = 0; j < cols; ++j) { */
+/*             if (arena[i][j] % 50 == 0 && arena[i][j] != 0) { */
+/*                 for (const auto& dir : directions) { */
+/*                     int newRow = i + dir.first; */
+/*                     int newCol = j + dir.second; */
+/*                     if (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < cols && arena[newRow][newCol] == 2) { */
+/*                         totalPoints += 2; */
+/*                     } */
+/*                 } */
+/*             } */
+/*         } */
+/*     } */
+/**/
+/*     cout << "Points Gained: " << totalPoints << ". "; */
+/*     if (totalPoints >= 10) { */
+/*         cout << "Your team has survived the game." << endl; */
+/*     } else { */
+/*         cout << "Your team is out." << endl; */
+/*     } */
+/* } */
+/* signed main(void){ */
+/**/
+/*     vector<vector<int>> arena1 = { */
+/*         {0, 2, 2, 0}, */
+/*         {50, 1, 2, 0}, */
+/*         {2, 2, 2, 0}, */
+/*         {1, 100, 2, 0} */
+/*     }; */
+/*     vector<vector<int>> arena2 = { */
+/*         {0, 2, 2, 0, 2}, */
+/*         {1, 50, 2, 1, 100}, */
+/*         {2, 2, 2, 0, 2}, */
+/*         {0, 200, 2, 0, 0} */
+/*     }; */
+/**/
+/*     isSurvived(arena1); */
+/*     isSurvived(arena2); */
+/**/
+/*     return 0; */
+/* } */
+/* Task-7 end here */
+
 
 
 

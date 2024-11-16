@@ -8,7 +8,6 @@ const int mod= 1e9+7;
 
 /* Task-1 start here */
 /* struct Node{ */
-/**/
 /*     string color; */
 /*     Node* next; */
 /**/
@@ -16,7 +15,6 @@ const int mod= 1e9+7;
 /*         this->color=color; */
 /*         this->next=nullptr; */
 /*     } */
-/**/
 /* }; */
 /**/
 /* bool check(Node* building1,Node* building2){ */
@@ -27,13 +25,9 @@ const int mod= 1e9+7;
 /*         building2=building2->next; */
 /*     } */
 /*     return true; */
-/**/
 /* } */
 /**/
-/**/
-/**/
 /* signed main(void){ */
-/**/
 /**/
 /*     Node* building1 = new Node("Red"); */
 /*     building1->next = new Node("Green"); */
@@ -45,13 +39,12 @@ const int mod= 1e9+7;
 /*     Node* building2 = new Node("Red"); */
 /*     building2->next = new Node("Green"); */
 /*     building2->next->next = new Node("Yellow"); */
-/*     building2->next->next->next = new Node("Green"); */
+/*     building2->next->next->next = new Node("Red"); */
 /*     building2->next->next->next->next = new Node("Blue"); */
 /*     building2->next->next->next->next->next = new Node("Green"); */
 /**/
 /*     if(check(building1,building2))cout<<"Similar"<<endl; */
 /*     else cout<<"Not Similar"<<endl; */
-/**/
 /*     return 0; */
 /* } */
 /* Task-1 end here */
@@ -79,6 +72,7 @@ const int mod= 1e9+7;
 /*     cout << endl; */
 /* } */
 /* Node* removeNthFromEnd(Node* head, int n) { */
+/**/
 /*     Node* dummy = new Node(0); */
 /*     dummy->next = head; */
 /*     Node* first = dummy; */
@@ -98,10 +92,9 @@ const int mod= 1e9+7;
 /**/
 /*     Node* newHead = dummy->next; */
 /*     delete dummy; */
-/*     return newHead; */
+/*     return newHead;  */
+/**/
 /* } */
-/**/
-/**/
 /**/
 /* signed main(void){ */
 /**/
@@ -122,7 +115,6 @@ const int mod= 1e9+7;
 /**/
 /*     return 0; */
 /* } */
-
 /* Task-2 end here  */
 
 
@@ -206,27 +198,30 @@ const int mod= 1e9+7;
 /*     head=head->next; */
 /*     bool flag=true; */
 /**/
-/*     Node* temp,*fn; */
+/*     Node* temp=new Node(0); */
+/*     Node* fn= temp; */
 /*     while(cnt<len){  */
 /*         if(cnt%jmp==0){ */
-/*             if(flag){ */
-/*                 temp=head; */
-/*                 flag=false; */
-/*             } */
-/*             else{ */
-/*                 temp->next=head; */
-/*                 temp=temp->next; */
-/*             } */
+/*             temp->next=head; */
+/*             temp=temp->next; */
+/*             head=head->next; */
+/*             cnt++; */
+/*             continue; */
 /*         } */
+/*         Node* toremove=head; */
 /*         head=head->next; */
+/*         delete toremove; */
 /*         cnt++; */
 /*     } */
 /*     temp->next=nullptr; */
-/**/
+/*     Node* remove=fn; */
+/*     fn=fn->next; */
+/*     delete remove; */
 /*     return reverse(fn); */
 /* } */
 /**/
 /* void printList(Node* head) { */
+/*     cout<<"None -> "; */
 /*     while (head) { */
 /*         cout << head->data; */
 /*         if (head->next) cout << " -> "; */
@@ -249,7 +244,6 @@ const int mod= 1e9+7;
 /**/
 /*     Node* decodedHead = decodeWord(head,10); */
 /*     printList(decodedHead); */
-/**/
 /*     return 0; */
 /* } */
 /* Task-4 end here */
@@ -292,10 +286,10 @@ const int mod= 1e9+7;
 /* void printList(Node* head) { */
 /*     while (head) { */
 /*         cout << head->data; */
-/*         if (head->next) cout << " -> "; */
+/*         cout << " -> "; */
 /*         head = head->next; */
 /*     } */
-/*     cout << endl; */
+/*     cout<<"None"<<endl; */
 /* } */
 /**/
 /* signed main(void) { */
@@ -317,13 +311,13 @@ const int mod= 1e9+7;
 /**/
 /*     return 0; */
 /* } */
-/**/
+
 /* Task-5 end here */
 
 
 /* Task-6 start here */
 
-/**/
+
 /* vector<int> check(1e6); */
 /**/
 /* struct Node{ */
@@ -340,7 +334,7 @@ const int mod= 1e9+7;
 /**/
 /*     while(head!=nullptr and anscount<arr.size()){ */
 /**/
-/*         if(check[count])result+=head->data*check[count],anscount++; */
+/*         if(check[count])result+=head->data*check[count],anscount+=check[count]; */
 /*         head=head->next; */
 /*         count++; */
 /*     } */
@@ -351,12 +345,12 @@ const int mod= 1e9+7;
 /* signed main(void){ */
 /**/
 /**/
-/*     Node* head=new Node(10); */
-/*     head->next=new Node(16); */
-/*     head->next->next=new Node(-5); */
-/*     head->next->next->next=new Node(9); */
-/*     head->next->next->next->next=new Node(3); */
-/*     head->next->next->next->next->next=new Node(4); */
+/*     node* head=new node(10); */
+/*     head->next=new node(16); */
+/*     head->next->next=new node(-5); */
+/*     head->next->next->next=new node(9); */
+/*     head->next->next->next->next=new node(3); */
+/*     head->next->next->next->next->next=new node(4); */
 /**/
 /**/
 /*     vector<int> arr={2,0,5,2,8}; */
@@ -369,9 +363,7 @@ const int mod= 1e9+7;
 /* Task-6 end here  */
 
 
-/* Task-7 start here */
-
-
+/* Bonus Task start here */
 /* struct Node{ */
 /**/
 /*     int data; */
@@ -455,7 +447,7 @@ const int mod= 1e9+7;
 /*     return 0; */
 /* } */
  
-/* Task-7 end here */
+/* Bonus Task end here */
 
 
 

@@ -22,7 +22,7 @@ const int mod = 1e9+7;
 /*             this->next = nullptr; */
 /*         } */
 /* }; */
-
+/**/
 /* class VehicleHashTable { */
 /*     public: */
 /*         vector<VehicleNode*> vehicleTable; */
@@ -331,112 +331,107 @@ const int mod = 1e9+7;
 
 /* Task-4 start here */
 
-class Node {
-    public:
-        int key;
-        string value;
-        Node* next;
-
-        Node(int key, string value, Node* next = nullptr) {
-            this->key = key;
-            this->value = value;
-            this->next = next;
-        }
-};
-
-class Hashtable {
-    public:
-        vector<Node*> ht;
-
-        Hashtable(int size) {
-            ht.resize(size, nullptr);
-        }
-
-        int __hash_function(int key) {
-            return (key + 3) % ht.size();
-        }
-
-        void insert(pair<int, string> s) {
-            int hashed_index = __hash_function(s.first);
-            Node* pair = new Node(s.first, s.second);
-            if (ht[hashed_index] == nullptr) {
-                ht[hashed_index] = pair;
-            } else {
-                pair->next = ht[hashed_index];
-                ht[hashed_index] = pair;
-            }
-        }
-
-        void create_from_array(vector<pair<int, string>> arr) {
-            for (auto& i : arr) {
-                insert(i);
-            }
-        }
-
-        void print_hashtable() {
-            int idx = 0;
-            for (auto& i : ht) {
-                cout << idx << ": ";
-                Node* head = i;
-                while (head != nullptr) {
-                    cout << "(" << head->key << ", " << head->value << ")-->";
-                    head = head->next;
-                }
-                cout << "None" << endl;
-                idx++;
-            }
-        }
-
-        void remove(int key) {
-            int hashed_index = __hash_function(key);
-            Node* current = ht[hashed_index];
-            Node* prev = nullptr;
-
-            while (current != nullptr && current->key != key) {
-                prev = current;
-                current = current->next;
-            }
-
-            if (current == nullptr) {
-                return; // Key not found
-            }
-
-            if (prev == nullptr) {
-                ht[hashed_index] = current->next;
-            } else {
-                prev->next = current->next;
-            }
-
-            delete current;
-        }
-};
-
-signed main(void) {
-    vector<pair<int, string>> arr = {{34, "Abid"}, {4, "Rafi"}, {6, "Karim"}, {3, "Chitra"}, {22, "Nilu"}, {18, "Niloy"}, {30, "Laima"}};
-    Hashtable ht(6);
-    ht.create_from_array(arr);
-    ht.print_hashtable();
-
-    cout << "======================" << endl;
-
-    ht.remove(22);
-    ht.print_hashtable();
-
-    cout << "======================" << endl;
-
-    ht.remove(18);
-    ht.print_hashtable();
-
-    cout << "======================" << endl;
-
-    ht.remove(6);
-    ht.print_hashtable();
-
-    cout << "======================" << endl;
-
-    ht.remove(3);
-    ht.print_hashtable();
-
-    return 0;
-}
+/* class Node { */
+/*     public: */
+/*         int key; */
+/*         string value; */
+/*         Node* next; */
+/**/
+/*         Node(int key, string value, Node* next = nullptr) { */
+/*             this->key = key; */
+/*             this->value = value; */
+/*             this->next = next; */
+/*         } */
+/* }; */
+/**/
+/* class Hashtable { */
+/*     public: */
+/*         vector<Node*> ht; */
+/**/
+/*         Hashtable(int size) { */
+/*             ht.resize(size, nullptr); */
+/*         } */
+/**/
+/*         int __hash_function(int key) { */
+/*             return (key + 3) % ht.size(); */
+/*         } */
+/**/
+/*         void insert(pair<int, string> s) { */
+/*             int hashed_index = __hash_function(s.first); */
+/*             Node* pair = new Node(s.first, s.second); */
+/*             if (ht[hashed_index] == nullptr) { */
+/*                 ht[hashed_index] = pair; */
+/*             } else { */
+/*                 pair->next = ht[hashed_index]; */
+/*                 ht[hashed_index] = pair; */
+/*             } */
+/*         } */
+/**/
+/*         void create_from_array(vector<pair<int, string>> arr) { */
+/*             for (auto& i : arr) { */
+/*                 insert(i); */
+/*             } */
+/*         } */
+/**/
+/*         void print_hashtable() { */
+/*             int idx = 0; */
+/*             for (auto& i : ht) { */
+/*                 cout << idx << ": "; */
+/*                 Node* head = i; */
+/*                 while (head != nullptr) { */
+/*                     cout << "(" << head->key << ", " << head->value << ")-->"; */
+/*                     head = head->next; */
+/*                 } */
+/*                 cout << "None" << endl; */
+/*                 idx++; */
+/*             } */
+/*         } */
+/**/
+/*         void remove(int key) { */
+/*             int hashed_index = __hash_function(key); */
+/*             Node* current = ht[hashed_index]; */
+/*             Node* prev = nullptr; */
+/**/
+/*             while (current != nullptr && current->key != key) { */
+/*                 prev = current; */
+/*                 current = current->next; */
+/*             } */
+/**/
+/*             if (current == nullptr) { */
+/*                 return;  */
+/*             } */
+/**/
+/*             if (prev == nullptr) { */
+/*                 ht[hashed_index] = current->next; */
+/*             } else { */
+/*                 prev->next = current->next; */
+/*             } */
+/**/
+/*             delete current; */
+/*         } */
+/* }; */
+/**/
+/* signed main(void) { */
+/*     vector<pair<int, string>> arr = {{34, "Abid"}, {4, "Rafi"}, {6, "Karim"}, {3, "Chitra"}, {22, "Nilu"}, {18, "Niloy"}, {30, "Laima"}}; */
+/*     Hashtable ht(6); */
+/*     ht.create_from_array(arr); */
+/*     ht.print_hashtable(); */
+/**/
+/*     ht.remove(22); */
+/*     ht.print_hashtable(); */
+/**/
+/**/
+/*     ht.remove(18); */
+/*     ht.print_hashtable(); */
+/**/
+/**/
+/*     ht.remove(6); */
+/*     ht.print_hashtable(); */
+/**/
+/**/
+/*     ht.remove(3); */
+/*     ht.print_hashtable(); */
+/**/
+/*     return 0; */
+/* } */
 /* Task-4 end here */

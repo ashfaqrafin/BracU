@@ -60,7 +60,6 @@ using namespace std;
 /*     } */
 /* }; */
 /**/
-/**/
 /* vector<int> levelMin(Node *root){ */
 /*     queue<Node*> q; */
 /*     q.push(root); */
@@ -105,7 +104,7 @@ using namespace std;
 
 
 /* Task-3 start here */
-
+/**/
 /* struct Node { */
 /*     int data; */
 /*     Node* left; */
@@ -215,49 +214,94 @@ using namespace std;
 /* } */
 /* Task-4 end here */
 
-/* Task-6 start here */
-struct Node {
-    int elem;
-    Node* left;
-    Node* right;
 
-    Node(int val) {
-        elem = val;
-        left = nullptr;
-        right = nullptr;
-    }
-};
-
-int difference_of_level_sum(Node* root, int level) {
-    if (root == nullptr) return 0;
-
-    if (level % 2 != 0) {
-        return root->elem + difference_of_level_sum(root->left, level + 1) + difference_of_level_sum(root->right, level + 1);
-    }
-    else {
-        return -root->elem + difference_of_level_sum(root->left, level + 1) + difference_of_level_sum(root->right, level + 1);
-    }
-}
+/* Task-5 start here */
 
 
-signed main(void) {
-    Node* root = new Node(1);
-    root->left = new Node(2);
-    root->right = new Node(3);
-    root->left->left = new Node(4);
-    root->right->left = new Node(5);
-    root->right->right = new Node(6);
-    root->right->left->left = new Node(7);
-    root->right->left->right = new Node(8);
-
-    int result = difference_of_level_sum(root, 0);
-
-    cout << result << endl;
-
-    return 0;
-}
-
+/* struct Node{ */
+/*     int elem; */
+/*     Node* left; */
+/*     Node* right; */
+/**/
+/*     Node(int val){ */
+/*         elem=val; */
+/*         left=nullptr; */
+/*         right=nullptr; */
+/*     } */
+/* }; */
+/**/
+/* int subtree_sum(Node* root){ */
+/*     if(!root)return 0; */
+/*     return root->elem+subtree_sum(root->left)+subtree_sum(root->right); */
+/* } */
+/* int subtract_summation(Node* root){ */
+/*     return subtree_sum(root->left)-subtree_sum(root->right); */
+/* } */
+/**/
+/* signed main(void){ */
+/**/
+/*     Node* root=new Node(71); */
+/*     root->left=new Node(27); */
+/*     root->right=new Node(62); */
+/*     root->left->left=new Node(80); */
+/*     root->left->right=new Node(75); */
+/*     root->right->left=new Node(41); */
+/*     root->right->right=new Node(3); */
+/*     root->left->left->left=new Node(87); */
+/*     root->left->left->right=new Node(56); */
+/*     root->right->right->left=new Node(19); */
+/*     root->right->right->right=new Node(89); */
+/**/
+/*     cout<<subtract_summation(root)<<endl; */
+/**/
+/*     return 0; */
+/**/
+/* } */
 /* Task-5 end here */
+
+
+/* Task-6 start here */
+/* struct Node { */
+/*     int elem; */
+/*     Node* left; */
+/*     Node* right; */
+/**/
+/*     Node(int val) { */
+/*         elem = val; */
+/*         left = nullptr; */
+/*         right = nullptr; */
+/*     } */
+/* }; */
+/**/
+/* int difference_of_level_sum(Node* root, int level) { */
+/*     if (root == nullptr) return 0; */
+/**/
+/*     if (level % 2 != 0) { */
+/*         return root->elem + difference_of_level_sum(root->left, level + 1) + difference_of_level_sum(root->right, level + 1); */
+/*     } */
+/*     else { */
+/*         return -root->elem + difference_of_level_sum(root->left, level + 1) + difference_of_level_sum(root->right, level + 1); */
+/*     } */
+/* } */
+/**/
+/**/
+/* signed main(void) { */
+/*     Node* root = new Node(1); */
+/*     root->left = new Node(2); */
+/*     root->right = new Node(3); */
+/*     root->left->left = new Node(4); */
+/*     root->right->left = new Node(5); */
+/*     root->right->right = new Node(6); */
+/*     root->right->left->left = new Node(7); */
+/*     root->right->left->right = new Node(8); */
+/**/
+/*     int result = difference_of_level_sum(root, 0); */
+/**/
+/*     cout << result << endl; */
+/**/
+/*     return 0; */
+/* } */
+/* Task-6 end here */
 
 
 

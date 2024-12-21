@@ -16,7 +16,6 @@ using namespace std;
 /*     } */
 /* }; */
 /**/
-/**/
 /* Node* insert(Node* root,int data){ */
 /*     if(!root)return new Node(data); */
 /**/
@@ -25,7 +24,6 @@ using namespace std;
 /*     return root; */
 /* } */
 /**/
-/**/
 /* Node* LCA(Node* root,int n1,int n2){ */
 /*     if(!root)return nullptr; */
 /**/
@@ -33,7 +31,6 @@ using namespace std;
 /*     if(root->data<n1 && root->data<n2)return LCA(root->right,n1,n2); */
 /*     return root; */
 /* } */
-/**/
 /**/
 /* signed main(void){ */
 /**/
@@ -53,6 +50,9 @@ using namespace std;
 /*     cout<<LCA(root,6,12)->data<<endl; */
 /*     cout<<LCA(root,20,6)->data<<endl; */
 /*     cout<<LCA(root,18,22)->data<<endl; */
+/*     cout<<LCA(root,20,25)->data<<endl; */
+/*     cout<<LCA(root,10,12)->data<<endl; */
+/**/
 /**/
 /*     return 0; */
 /* } */
@@ -94,17 +94,17 @@ using namespace std;
 /**/
 /* signed main(void){ */
 /**/
-    /* Node *root=new Node(30); */
-    /* insert(root,10); */
-    /* insert(root,40); */
-    /* insert(root,3); */
-    /* insert(root,15); */
-    /* insert(root,35); */
-    /* insert(root,55); */
+/*     Node *root=new Node(30); */
+/*     insert(root,10); */
+/*     insert(root,40); */
+/*     insert(root,3); */
+/*     insert(root,15); */
+/*     insert(root,35); */
+/*     insert(root,55); */
 /**/
 /*     vector<int> path; */
 /**/
-/*     if(find_path(root,path,30)){ */
+/*     if(find_path(root,path,15)){ */
 /*         for(auto &i:path)cout<<i<<" "; */
 /*         cout<<endl; */
 /*     }else cout<<"No path found"<<endl; */
@@ -162,57 +162,55 @@ using namespace std;
 
 
 /* Task-4 start here */
-struct Node{
-    int data;
-    Node *left,*right;
-
-    Node(int val){
-        data=val;
-        left=nullptr;
-        right=nullptr;
-    }
-};
-Node* insert(Node* root,int data){
-    if(!root)return new Node(data);
-
-    if(data<root->data)root->left=insert(root->left,data);
-    else root->right=insert(root->right,data);
-    return root;
-}
-
-
-
-Node* in_order_predecessor(Node* root, Node* x) {
-    Node* predecessor = NULL;
-
-    while (root != NULL) {
-        if (x->data <= root->data) {
-            root = root->left;
-        } else {
-            predecessor = root;
-            root = root->right;
-        }
-    }
-    return predecessor;
-}
-
-
-int main() {
-    Node* root = NULL;
-    root = insert(root, 20);
-    insert(root, 8);
-    insert(root, 22);
-    insert(root, 4);
-    insert(root, 12);
-    insert(root, 10);
-    insert(root, 14);
-
-    Node* node = root->left->right->left; 
-    Node* predecessor = in_order_predecessor(root, node);
-    cout<<predecessor->data<<endl;
-
-    return 0;
-}
-
-
+/* struct Node{ */
+/*     int data; */
+/*     Node *left,*right; */
+/**/
+/*     Node(int val){ */
+/*         data=val; */
+/*         left=nullptr; */
+/*         right=nullptr; */
+/*     } */
+/* }; */
+/**/
+/* Node* insert(Node* root,int data){ */
+/*     if(!root)return new Node(data); */
+/**/
+/*     if(data<root->data)root->left=insert(root->left,data); */
+/*     else root->right=insert(root->right,data); */
+/*     return root; */
+/* } */
+/**/
+/**/
+/**/
+/* Node* in_order_predecessor(Node* root, Node* x) { */
+/*     Node* predecessor = NULL; */
+/**/
+/*     while (root != NULL) { */
+/*         if (x->data <= root->data) { */
+/*             root = root->left; */
+/*         } else { */
+/*             predecessor = root; */
+/*             root = root->right; */
+/*         } */
+/*     } */
+/*     return predecessor; */
+/* } */
+/**/
+/**/
+/* int main() { */
+/*     Node* root = new Node(20); */
+/*     insert(root, 8); */
+/*     insert(root, 22); */
+/*     insert(root, 4); */
+/*     insert(root, 12); */
+/*     insert(root, 10); */
+/*     insert(root, 14); */
+/**/
+/*     Node* node = root->left->right->left;  */
+/*     Node* predecessor = in_order_predecessor(root, node); */
+/*     cout<<predecessor->data<<endl; */
+/**/
+/*     return 0; */
+/* } */
 /* Task-4 end here */

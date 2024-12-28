@@ -193,6 +193,7 @@ using namespace std;
 
 
 /* Task-3 start here */
+
 /* vector<int> distributeTasks(const vector<int>& tasks, int m) { */
 /*     priority_queue<int, vector<int>, greater<int>> minHeap; */
 /**/
@@ -235,33 +236,31 @@ using namespace std;
 
 
 /* Task-4 start here */
-
-vector<int> findTopKLargest(const vector<int>& nums, int k) {
-    priority_queue<int> maxHeap(nums.begin(), nums.end());
-
-    vector<int> result;
-
-    for (int i = 0; i < k; i++) {
-        result.push_back(maxHeap.top());
-        maxHeap.pop();
-    }
-
-    return result;
-}
-
-int main() {
-    vector<int> nums = {4, 10, 2, 8, 6, 7};
-    int k = 3;
-
-    vector<int> result = findTopKLargest(nums, k);
-
-    cout << "Top " << k << " largest elements: ";
-    for (int num : result) {
-        cout << num << " ";
-    }
-    cout << endl;
-
-    return 0;
-}
+/**/
+/* vector<int> findTopKLargest(const vector<int>& nums, int k) { */
+/*     priority_queue<int> maxHeap(nums.begin(), nums.end()); */
+/*     vector<int> result; */
+/*     for (int i = 0; i < k; i++) { */
+/*         result.push_back(maxHeap.top()); */
+/*         maxHeap.pop(); */
+/*     } */
+/**/
+/*     return result; */
+/* } */
+/**/
+/* int main() { */
+/*     vector<int> nums = {4, 10, 2, 8, 6, 7}; */
+/*     int k = 3; */
+/**/
+/*     vector<int> result = findTopKLargest(nums, k); */
+/**/
+/*     cout << "Top " << k << " largest elements: "; */
+/*     for (int i : result) { */
+/*         cout << i << " "; */
+/*     } */
+/*     cout << endl; */
+/**/
+/*     return 0; */
+/* } */
 /* Task-4 end here */
 

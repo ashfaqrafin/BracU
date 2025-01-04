@@ -162,55 +162,55 @@ using namespace std;
 
 
 /* Task-4 start here */
-/* struct Node{ */
-/*     int data; */
-/*     Node *left,*right; */
-/**/
-/*     Node(int val){ */
-/*         data=val; */
-/*         left=nullptr; */
-/*         right=nullptr; */
-/*     } */
-/* }; */
-/**/
-/* Node* insert(Node* root,int data){ */
-/*     if(!root)return new Node(data); */
-/**/
-/*     if(data<root->data)root->left=insert(root->left,data); */
-/*     else root->right=insert(root->right,data); */
-/*     return root; */
-/* } */
-/**/
-/**/
-/**/
-/* Node* in_order_predecessor(Node* root, Node* x) { */
-/*     Node* predecessor = NULL; */
-/**/
-/*     while (root != NULL) { */
-/*         if (x->data <= root->data) { */
-/*             root = root->left; */
-/*         } else { */
-/*             predecessor = root; */
-/*             root = root->right; */
-/*         } */
-/*     } */
-/*     return predecessor; */
-/* } */
-/**/
-/**/
-/* int main() { */
-/*     Node* root = new Node(20); */
-/*     insert(root, 8); */
-/*     insert(root, 22); */
-/*     insert(root, 4); */
-/*     insert(root, 12); */
-/*     insert(root, 10); */
-/*     insert(root, 14); */
-/**/
-/*     Node* node = root->left->right->left;  */
-/*     Node* predecessor = in_order_predecessor(root, node); */
-/*     cout<<predecessor->data<<endl; */
-/**/
-/*     return 0; */
-/* } */
+struct Node{
+    int data;
+    Node *left,*right;
+
+    Node(int val){
+        data=val;
+        left=nullptr;
+        right=nullptr;
+    }
+};
+
+Node* insert(Node* root,int data){
+    if(!root)return new Node(data);
+
+    if(data<root->data)root->left=insert(root->left,data);
+    else root->right=insert(root->right,data);
+    return root;
+}
+
+
+
+Node* in_order_predecessor(Node* root, Node* x) {
+    Node* predecessor = NULL;
+
+    while (root != NULL) {
+        if (x->data <= root->data) {
+            root = root->left;
+        } else {
+            predecessor = root;
+            root = root->right;
+        }
+    }
+    return predecessor;
+}
+
+
+int main() {
+    Node* root = new Node(20);
+    insert(root, 8);
+    insert(root, 22);
+    insert(root, 4);
+    insert(root, 12);
+    insert(root, 10);
+    insert(root, 14);
+
+    Node* node = root->left->right->left; 
+    Node* predecessor = in_order_predecessor(root, node);
+    cout<<predecessor->data<<endl;
+
+    return 0;
+}
 /* Task-4 end here */

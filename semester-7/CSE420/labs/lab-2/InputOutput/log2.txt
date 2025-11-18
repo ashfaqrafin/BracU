@@ -101,7 +101,6 @@ Type: int
 Variable
 Type: int
 
-
 ScopeTable # 1
 8 --> 
 < func : ID >
@@ -236,7 +235,6 @@ Type: float
 Variable
 Type: int
 
-
 ScopeTable # 1
 8 --> 
 < func : ID >
@@ -244,6 +242,7 @@ Function Definition
 Return Type: int
 Number of Parameters: 2
 Parameter Details: int a, int b
+
 < func2 : ID >
 Function Definition
 Return Type: int
@@ -857,7 +856,6 @@ ScopeTable # 5
 Variable
 Type: int
 
-
 ScopeTable # 4
 0 --> 
 < d : ID >
@@ -901,7 +899,6 @@ Type: int
 Variable
 Type: int
 
-
 ScopeTable # 1
 1 --> 
 < main : ID >
@@ -909,12 +906,14 @@ Function Definition
 Return Type: int
 Number of Parameters: 0
 Parameter Details: 
+
 8 --> 
 < func : ID >
 Function Definition
 Return Type: int
 Number of Parameters: 2
 Parameter Details: int a, int b
+
 < func2 : ID >
 Function Definition
 Return Type: int
@@ -1198,7 +1197,6 @@ ScopeTable # 6
 Variable
 Type: float
 
-
 ScopeTable # 4
 0 --> 
 < d : ID >
@@ -1242,7 +1240,6 @@ Type: int
 Variable
 Type: int
 
-
 ScopeTable # 1
 1 --> 
 < main : ID >
@@ -1250,12 +1247,14 @@ Function Definition
 Return Type: int
 Number of Parameters: 0
 Parameter Details: 
+
 8 --> 
 < func : ID >
 Function Definition
 Return Type: int
 Number of Parameters: 2
 Parameter Details: int a, int b
+
 < func2 : ID >
 Function Definition
 Return Type: int
@@ -1485,7 +1484,6 @@ ScopeTable # 7
 Variable
 Type: int
 
-
 ScopeTable # 4
 0 --> 
 < d : ID >
@@ -1529,7 +1527,6 @@ Type: int
 Variable
 Type: int
 
-
 ScopeTable # 1
 1 --> 
 < main : ID >
@@ -1537,12 +1534,14 @@ Function Definition
 Return Type: int
 Number of Parameters: 0
 Parameter Details: 
+
 8 --> 
 < func : ID >
 Function Definition
 Return Type: int
 Number of Parameters: 2
 Parameter Details: int a, int b
+
 < func2 : ID >
 Function Definition
 Return Type: int
@@ -1736,7 +1735,6 @@ Type: int
 Variable
 Type: int
 
-
 ScopeTable # 1
 1 --> 
 < main : ID >
@@ -1744,12 +1742,14 @@ Function Definition
 Return Type: int
 Number of Parameters: 0
 Parameter Details: 
+
 8 --> 
 < func : ID >
 Function Definition
 Return Type: int
 Number of Parameters: 2
 Parameter Details: int a, int b
+
 < func2 : ID >
 Function Definition
 Return Type: int
@@ -1874,12 +1874,14 @@ Function Definition
 Return Type: int
 Number of Parameters: 0
 Parameter Details: 
+
 8 --> 
 < func : ID >
 Function Definition
 Return Type: int
 Number of Parameters: 2
 Parameter Details: int a, int b
+
 < func2 : ID >
 Function Definition
 Return Type: int

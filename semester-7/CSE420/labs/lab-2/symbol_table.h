@@ -1,4 +1,5 @@
 #include "scope_table.h"
+extern ofstream outlog;
 
 class symbol_table
 {
@@ -22,15 +23,73 @@ public:
 
 // complete the methods of symbol_table class
 
+symbol_table::symbol_table(int bucket_count)
+{
+    this->bucket_count = bucket_count;
+    current_scope = NULL;
+    current_scope_id = 0;
+}
 
-// void symbol_table::print_all_scopes(ofstream& outlog)
-// {
-//     outlog<<"################################"<<endl<<endl;
-//     scope_table *temp = current_scope;
-//     while (temp != NULL)
-//     {
-//         temp->print_scope_table(outlog);
-//         temp = temp->get_parent_scope();
-//     }
-//     outlog<<"################################"<<endl<<endl;
-// }
+symbol_table::~symbol_table()
+{
+    while(current_scope != NULL)
+    {
+        scope_table *p = current_scope->get_parent_scope();
+        delete current_scope;
+        current_scope = p;
+    }
+}
+
+void symbol_table::enter_scope()
+{
+    current_scope = new scope_table(bucket_count, ++current_scope_id, current_scope);
+    outlog << "New ScopeTable with ID " << current_scope_id << " created" << endl << endl;
+}
+
+void symbol_table::exit_scope()
+{
+    if(current_scope == NULL) return;
+    int id = current_scope->get_unique_id();
+    scope_table *p = current_scope->get_parent_scope();
+    delete current_scope;
+    current_scope = p;
+    outlog << "Scopetable with ID " << id << " removed" << endl << endl;
+}
+
+bool symbol_table::insert(symbol_info* symbol)
+{
+    if(current_scope == NULL) return false;
+    return current_scope->insert_in_scope(symbol);
+}
+
+symbol_info* symbol_table::lookup(symbol_info* symbol)
+{
+    scope_table *temp = current_scope;
+    while(temp != NULL)
+    {
+        symbol_info *found = temp->lookup_in_scope(symbol);
+        if(found != NULL) return found;
+        temp = temp->get_parent_scope();
+    }
+    return NULL;
+}
+
+void symbol_table::print_current_scope()
+{
+    if(current_scope) current_scope->print_scope_table(outlog);
+}
+
+void symbol_table::print_all_scopes(ofstream& outlog)
+{
+    outlog<<"################################"<<endl<<endl;
+    scope_table *temp = current_scope;
+    while (temp != NULL)
+    {
+        temp->print_scope_table(outlog);
+        temp = temp->get_parent_scope();
+    }
+    outlog<<"################################"<<endl<<endl;
+}
+
+
+// 

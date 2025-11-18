@@ -101,7 +101,6 @@ Type: int
 Variable
 Type: float
 
-
 ScopeTable # 1
 8 --> 
 < func : ID >
@@ -492,7 +491,6 @@ Type: int
 Variable
 Type: int
 
-
 ScopeTable # 1
 1 --> 
 < main : ID >
@@ -500,6 +498,7 @@ Function Definition
 Return Type: void
 Number of Parameters: 0
 Parameter Details: 
+
 8 --> 
 < func : ID >
 Function Definition
@@ -564,6 +563,7 @@ Function Definition
 Return Type: void
 Number of Parameters: 0
 Parameter Details: 
+
 8 --> 
 < func : ID >
 Function Definition

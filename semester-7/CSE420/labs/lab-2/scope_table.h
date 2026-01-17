@@ -2,32 +2,29 @@
 
 class scope_table
 {
-private:
-    int bucket_count;
-    int unique_id;
-    scope_table *parent_scope = NULL;
-    vector<list<symbol_info *>> table;
+    private:
+        int bucket_count;
+        int unique_id;
+        scope_table *parent_scope = NULL;
+        vector<list<symbol_info *>> table;
 
-    int hash_function(string name)
-    {
-        // sum of ASCII values mod bucket_count (to match expected output buckets)
-        unsigned long long sum = 0;
-        for(char c : name) sum += static_cast<unsigned char>(c);
-        return (int)(sum % bucket_count);
-    }
+        int hash_function(string name)
+        {
+            unsigned long long sum = 0;
+            for(char c : name) sum += static_cast<unsigned char>(c);
+            return (int)(sum % bucket_count);
+        }
 
-public:
-    scope_table();
-    scope_table(int bucket_count, int unique_id, scope_table *parent_scope);
-    scope_table *get_parent_scope();
-    int get_unique_id();
-    symbol_info *lookup_in_scope(symbol_info* symbol);
-    bool insert_in_scope(symbol_info* symbol);
-    bool delete_from_scope(symbol_info* symbol);
-    void print_scope_table(ofstream& outlog);
-    ~scope_table();
-
-    // you can add more methods if you need
+    public:
+        scope_table();
+        scope_table(int bucket_count, int unique_id, scope_table *parent_scope);
+        scope_table *get_parent_scope();
+        int get_unique_id();
+        symbol_info *lookup_in_scope(symbol_info* symbol);
+        bool insert_in_scope(symbol_info* symbol);
+        bool delete_from_scope(symbol_info* symbol);
+        void print_scope_table(ofstream& outlog);
+        ~scope_table();
 };
 
 // complete the methods of scope_table class
@@ -35,7 +32,6 @@ void scope_table::print_scope_table(ofstream& outlog)
 {
     outlog << "ScopeTable # "+ to_string(unique_id) << endl;
 
-    //iterate through the current scope table and print the symbols and all relevant information
     for(int i=0;i<bucket_count;i++)
     {
         if(table[i].empty()) continue;
@@ -82,8 +78,8 @@ scope_table::scope_table(): bucket_count(10), unique_id(0), parent_scope(NULL), 
 scope_table::scope_table(int bucket_count, int unique_id, scope_table *parent_scope)
     : bucket_count(bucket_count), unique_id(unique_id), parent_scope(parent_scope), table(bucket_count) {}
 
-scope_table* scope_table::get_parent_scope() { return parent_scope; }
-int scope_table::get_unique_id() { return unique_id; }
+    scope_table* scope_table::get_parent_scope() { return parent_scope; }
+    int scope_table::get_unique_id() { return unique_id; }
 
 symbol_info* scope_table::lookup_in_scope(symbol_info* symbol)
 {
@@ -123,7 +119,6 @@ bool scope_table::delete_from_scope(symbol_info* symbol)
 
 scope_table::~scope_table()
 {
-    // clean up symbols
     for(auto &lst : table)
     {
         for(auto *s : lst) delete s;

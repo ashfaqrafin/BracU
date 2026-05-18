@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Schema Diagram — Urban Logistics &amp; Crowdsourced Courier Network</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    background: linear-gradient(180deg, #f4f2eb 0%, #efede6 100%);
+    min-height: 100vh;
+    padding: 30px 28px 80px;
+  }
+
+  .page {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  header { margin-bottom: 26px; }
+
+  h1 {
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: #111;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+
+  .subtitle {
+    font-size: 11px;
+    color: #787878;
+    letter-spacing: 0.02em;
+  }
+
+  .toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin: 0 0 14px;
+    padding: 11px 12px;
+    border: 1px solid #d2cfc7;
+    border-radius: 10px;
+    background: #fbfaf6;
+  }
+
+  .toolbar-title {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: #666;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .filter-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    border: 1px solid #c8c5bd;
+    background: #fff;
+    color: #54514b;
+    border-radius: 999px;
+    font-family: inherit;
+    font-size: 10px;
+    letter-spacing: 0.03em;
+    padding: 4px 10px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .filter-btn:hover {
+    border-color: #888;
+    color: #232323;
+  }
+
+  .filter-btn.active {
+    background: #1f1f1f;
+    color: #fff;
+    border-color: #1f1f1f;
+  }
+
+  .toolbar-hint {
+    font-size: 9.5px;
+    color: #7a7770;
+    white-space: nowrap;
+  }
+
+  .schema-wrapper {
+    overflow-x: auto;
+    overflow-y: visible;
+    border: 1px solid #d4d0c8;
+    border-radius: 12px;
+    background: #f8f7f3;
+    padding: 16px 14px 14px;
+  }
+
+  /* Extra right padding for connector lines */
+  .schema {
+    position: relative;
+    display: inline-block;
+    padding-right: 320px;
+    padding-bottom: 10px;
+    min-width: max-content;
+  }
+
+  .connector-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: visible;
+    pointer-events: none;
+  }
+
+  /* ── Table Row ── */
+  .table-row {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 13px;
+  }
+
+  .tbl-name {
+    width: 230px;
+    flex-shrink: 0;
+    text-align: right;
+    padding-right: 14px;
+    padding-top: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: #111;
+    line-height: 1.3;
+  }
+
+  .tbl-badge {
+    display: block;
+    font-size: 8.8px;
+    font-weight: 400;
+    color: #909090;
+    margin-top: 2px;
+    letter-spacing: 0.01em;
+  }
+
+  /* ── Attribute Row ── */
+  .attr-row {
+    display: flex;
+    border: 1.5px solid #282828;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.05);
+  }
+
+  /* Weak entity: outer double-line effect via box-shadow */
+  .attr-row.weak {
+    box-shadow: 0 0 0 3px #fff, 0 0 0 4.5px #282828;
+  }
+
+  /* ── Individual Attribute Cell ── */
+  .attr-cell {
+    padding: 6px 11px;
+    font-size: 10.5px;
+    white-space: nowrap;
+    color: #222;
+    border-right: 1px solid #d0cfc9;
+    line-height: 1.45;
+    background: #fff;
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .attr-cell:hover {
+    background: #f4f2ea;
+  }
+
+  .attr-cell.fk-hover {
+    background: #e8f0ff;
+    color: #173e82;
+  }
+
+  .attr-cell:last-child { border-right: none; }
+
+  /* Primary Key */
+  .attr-cell.pk {
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    background: #f9f8f4;
+  }
+
+  /* Foreign Key */
+  .attr-cell.fk {
+    color: #1a4da0;
+    background: #f0f4ff;
+  }
+
+  /* PK that is also FK */
+  .attr-cell.pk.fk {
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    color: #1a4da0;
+    background: #eaefff;
+  }
+
+  /* ── Section Dividers ── */
+  .section-label {
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #8f8a80;
+    padding: 16px 0 7px 230px;
+  }
+
+  .section-label:first-child { padding-top: 0; }
+
+  /* ── Legend ── */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 22px;
+    margin-top: 34px;
+    padding-top: 16px;
+    border-top: 1px solid #d0cfc9;
+    font-size: 10px;
+    color: #777;
+    align-items: center;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .lg-pk  { font-family: monospace; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; font-size: 11px; color: #111; }
+  .lg-fk  { font-family: monospace; color: #1a4da0; font-size: 11px; }
+  .lg-weak-box {
+    display: inline-block;
+    border: 1.5px solid #282828;
+    box-shadow: 0 0 0 3px #f0efe9, 0 0 0 4.5px #282828;
+    padding: 1px 7px;
+    font-size: 10px;
+    background: #fff;
+  }
+
+  .lg-line {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+  }
+
+  .lg-dash { width: 22px; border-top: 1.5px dashed; }
+
+  @media (max-width: 920px) {
+    body {
+      padding: 20px 12px 60px;
+    }
+
+    .toolbar {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .toolbar-hint {
+      white-space: normal;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+<header>
+  <h1>Schema Diagram — Urban Logistics &amp; Crowdsourced Courier Network</h1>
+  <div class="subtitle">12 relations · ISA specialization (overlapping, total) · 2 weak entities · 17 FK references · filterable link groups</div>
+</header>
+
+<div class="toolbar">
+  <div class="toolbar-title">Relationship View</div>
+  <div class="filter-row" id="rel-filters">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="isa">ISA</button>
+    <button class="filter-btn" data-filter="standard">Standard FK</button>
+    <button class="filter-btn" data-filter="weak">Weak/Composition</button>
+    <button class="filter-btn" data-filter="rating">Rating</button>
+    <button class="filter-btn" data-filter="zone">Zone</button>
+  </div>
+  <div class="toolbar-hint">Tip: hover any foreign key cell to isolate its relationship.</div>
+</div>
+
+<div class="schema-wrapper">
+<div class="schema" id="schema">
+  <svg class="connector-svg" id="svg-lines"></svg>
+
+  <!-- ─── USERS ─── -->
+  <div class="section-label">Users</div>
+
+  <div class="table-row">
+    <div class="tbl-name">USER <span class="tbl-badge">superclass · overlapping total</span></div>
+    <div class="attr-row" id="t-USER">
+      <div class="attr-cell pk" id="c-USER-UserID">UserID</div>
+      <div class="attr-cell" id="c-USER-Email">Email</div>
+      <div class="attr-cell" id="c-USER-Phone">Phone</div>
+      <div class="attr-cell" id="c-USER-PasswordHash">PasswordHash</div>
+      <div class="attr-cell" id="c-USER-CreatedAt">CreatedAt</div>
+      <div class="attr-cell" id="c-USER-ActiveRole">ActiveRole</div>
+    </div>
+  </div>
+
+  <div class="table-row">
+    <div class="tbl-name">SENDER <span class="tbl-badge">subclass of USER</span></div>
+    <div class="attr-row" id="t-SENDER">
+      <div class="attr-cell pk" id="c-SENDER-SenderID">SenderID</div>
+      <div class="attr-cell fk" id="c-SENDER-UserID">UserID</div>
+      <div class="attr-cell" id="c-SENDER-DefaultPickupAddr">DefaultPickupAddr</div>
+      <div class="attr-cell" id="c-SENDER-BillingInfo">BillingInfo</div>
+      <div class="attr-cell fk" id="c-SENDER-PreferredZoneID">PreferredZoneID</div>
+    </div>
+  </div>
+
+  <div class="table-row">
+    <div class="tbl-name">FREELANCE_COURIER <span class="tbl-badge">subclass of USER</span></div>
+    <div class="attr-row" id="t-FC">
+      <div class="attr-cell pk" id="c-FC-CourierID">CourierID</div>
+      <div class="attr-cell fk" id="c-FC-UserID">UserID</div>
+      <div class="attr-cell" id="c-FC-VehicleType">VehicleType</div>
+      <div class="attr-cell" id="c-FC-CertLevel">CertificationLevel</div>
+      <div class="attr-cell" id="c-FC-TrustIndex">TrustIndex</div>
+      <div class="attr-cell" id="c-FC-WalletBalance">WalletBalance</div>
+      <div class="attr-cell" id="c-FC-IsAvailable">IsAvailable</div>
+      <div class="attr-cell fk" id="c-FC-CurrentZoneID">CurrentZoneID</div>
+    </div>
+  </div>
+
+  <!-- ─── ORDERS ─── -->
+  <div class="section-label">Orders &amp; Logistics</div>
+
+  <div class="table-row">
+    <div class="tbl-name">DELIVERY_ORDER</div>
+    <div class="attr-row" id="t-DO">
+      <div class="attr-cell pk" id="c-DO-OrderID">OrderID</div>
+      <div class="attr-cell fk" id="c-DO-SenderID">SenderID</div>
+      <div class="attr-cell fk" id="c-DO-CourierID">CourierID</div>
+      <div class="attr-cell fk" id="c-DO-ParcelID">ParcelID</div>
+      <div class="attr-cell fk" id="c-DO-PickupHubID">PickupHubID</div>
+      <div class="attr-cell fk" id="c-DO-DropHubID">DropHubID</div>
+      <div class="attr-cell" id="c-DO-UrgencyFactor">UrgencyFactor</div>
+      <div class="attr-cell" id="c-DO-QuotedFee">QuotedFee</div>
+      <div class="attr-cell" id="c-DO-PaymentStatus">PaymentStatus</div>
+      <div class="attr-cell" id="c-DO-OrderStatus">OrderStatus</div>
+      <div class="attr-cell" id="c-DO-PlacedAt">PlacedAt</div>
+    </div>
+  </div>
+
+  <div class="table-row">
+    <div class="tbl-name">PARCEL</div>
+    <div class="attr-row" id="t-PARCEL">
+      <div class="attr-cell pk" id="c-P-ParcelID">ParcelID</div>
+      <div class="attr-cell" id="c-P-WeightKG">WeightKG</div>
+      <div class="attr-cell" id="c-P-DimensionsCM">DimensionsCM</div>
+      <div class="attr-cell" id="c-P-ItemType">ItemType</div>
+      <div class="attr-cell" id="c-P-IsFragile">IsFragile</div>
+      <div class="attr-cell" id="c-P-IsPerishable">IsPerishable</div>
+      <div class="attr-cell" id="c-P-ReqCertified">RequiresCertified</div>
+    </div>
+  </div>
+
+  <div class="table-row">
+    <div class="tbl-name">TRACKING_MILESTONE <span class="tbl-badge">weak entity</span></div>
+    <div class="attr-row weak" id="t-TM">
+      <div class="attr-cell pk" id="c-TM-MilestoneID">MilestoneID</div>
+      <div class="attr-cell fk" id="c-TM-OrderID">OrderID</div>
+      <div class="attr-cell" id="c-TM-Status">Status</div>
+      <div class="attr-cell" id="c-TM-ChangedAt">ChangedAt</div>
+      <div class="attr-cell" id="c-TM-LocationLat">LocationLat</div>
+      <div class="attr-cell" id="c-TM-LocationLng">LocationLng</div>
+      <div class="attr-cell" id="c-TM-Notes">Notes</div>
+    </div>
+  </div>
+
+  <!-- ─── FINANCE ─── -->
+  <div class="section-label">Finance</div>
+
+  <div class="table-row">
+    <div class="tbl-name">TRANSACTION</div>
+    <div class="attr-row" id="t-TXN">
+      <div class="attr-cell pk" id="c-TXN-TransactionID">TransactionID</div>
+      <div class="attr-cell fk" id="c-TXN-OrderID">OrderID</div>
+      <div class="attr-cell" id="c-TXN-Amount">Amount</div>
+      <div class="attr-cell" id="c-TXN-Status">Status</div>
+      <div class="attr-cell" id="c-TXN-HeldAt">HeldAt</div>
+      <div class="attr-cell" id="c-TXN-ReleasedAt">ReleasedAt</div>
+      <div class="attr-cell" id="c-TXN-PlatformFee">PlatformFee</div>
+      <div class="attr-cell" id="c-TXN-CourierPayout">CourierPayout</div>
+    </div>
+  </div>
+
+  <div class="table-row">
+    <div class="tbl-name">COURIER_LEDGER <span class="tbl-badge">weak entity</span></div>
+    <div class="attr-row weak" id="t-CL">
+      <div class="attr-cell pk" id="c-CL-LedgerID">LedgerID</div>
+      <div class="attr-cell fk" id="c-CL-CourierID">CourierID</div>
+      <div class="attr-cell fk" id="c-CL-TransactionID">TransactionID</div>
+      <div class="attr-cell" id="c-CL-Amount">Amount</div>
+      <div class="attr-cell" id="c-CL-EntryType">EntryType</div>
+      <div class="attr-cell" id="c-CL-CreatedAt">CreatedAt</div>
+    </div>
+  </div>
+
+  <!-- ─── ENGAGEMENT ─── -->
+  <div class="section-label">Engagement</div>
+
+  <div class="table-row">
+    <div class="tbl-name">RATING</div>
+    <div class="attr-row" id="t-RATING">
+      <div class="attr-cell pk" id="c-R-RatingID">RatingID</div>
+      <div class="attr-cell fk" id="c-R-OrderID">OrderID</div>
+      <div class="attr-cell fk" id="c-R-RaterUserID">RaterUserID</div>
+      <div class="attr-cell" id="c-R-RaterRole">RaterRole</div>
+      <div class="attr-cell" id="c-R-Score">Score</div>
+      <div class="attr-cell" id="c-R-WeightedContrib">WeightedContrib</div>
+      <div class="attr-cell" id="c-R-Comment">Comment</div>
+      <div class="attr-cell" id="c-R-CreatedAt">CreatedAt</div>
+    </div>
+  </div>
+
+  <!-- ─── GEOGRAPHY ─── -->
+  <div class="section-label">Geography &amp; Incentives</div>
+
+  <div class="table-row">
+    <div class="tbl-name">URBAN_HUB</div>
+    <div class="attr-row" id="t-UH">
+      <div class="attr-cell pk" id="c-UH-HubID">HubID</div>
+      <div class="attr-cell" id="c-UH-HubName">HubName</div>
+      <div class="attr-cell" id="c-UH-Address">Address</div>
+      <div class="attr-cell" id="c-UH-Latitude">Latitude</div>
+      <div class="attr-cell" id="c-UH-Longitude">Longitude</div>
+      <div class="attr-cell fk" id="c-UH-ZoneID">ZoneID</div>
+      <div class="attr-cell" id="c-UH-Capacity">Capacity</div>
+      <div class="attr-cell" id="c-UH-CurrentLoad">CurrentLoad</div>
+    </div>
+  </div>
+
+  <div class="table-row">
+    <div class="tbl-name">ZONE</div>
+    <div class="attr-row" id="t-ZONE">
+      <div class="attr-cell pk" id="c-Z-ZoneID">ZoneID</div>
+      <div class="attr-cell" id="c-Z-ZoneName">ZoneName</div>
+      <div class="attr-cell" id="c-Z-ZoneType">ZoneType</div>
+      <div class="attr-cell" id="c-Z-CityName">CityName</div>
+      <div class="attr-cell" id="c-Z-IsInterCity">IsInterCity</div>
+      <div class="attr-cell" id="c-Z-BoundaryGeoJSON">BoundaryGeoJSON</div>
+    </div>
+  </div>
+
+  <div class="table-row">
+    <div class="tbl-name">INCENTIVE_MULTIPLIER</div>
+    <div class="attr-row" id="t-IM">
+      <div class="attr-cell pk" id="c-IM-MultiplierID">MultiplierID</div>
+      <div class="attr-cell fk" id="c-IM-ZoneID">ZoneID</div>
+      <div class="attr-cell" id="c-IM-MultiplierType">MultiplierType</div>
+      <div class="attr-cell" id="c-IM-Factor">Factor</div>
+      <div class="attr-cell" id="c-IM-StartTime">StartTime</div>
+      <div class="attr-cell" id="c-IM-EndTime">EndTime</div>
+      <div class="attr-cell" id="c-IM-IsActive">IsActive</div>
+    </div>
+  </div>
+
+</div><!-- .schema -->
+</div><!-- .schema-wrapper -->
+
+<!-- ─── Legend ─── -->
+<div class="legend">
+  <div class="legend-item"><span class="lg-pk">AttrName</span> Primary Key</div>
+  <div class="legend-item"><span class="lg-fk">AttrName</span> Foreign Key</div>
+  <div class="legend-item"><span class="lg-weak-box">Table</span> Weak Entity</div>
+  <div class="legend-item">
+    <div class="lg-line">
+      <div class="lg-dash" style="border-color:#9b2226;"></div>
+      <span style="color:#9b2226;font-size:11px;">→</span>
+    </div>
+    ISA / Identity ref
+  </div>
+  <div class="legend-item">
+    <div class="lg-line">
+      <div class="lg-dash" style="border-color:#1a4da0;"></div>
+      <span style="color:#1a4da0;font-size:11px;">→</span>
+    </div>
+    Standard FK ref
+  </div>
+  <div class="legend-item">
+    <div class="lg-line">
+      <div class="lg-dash" style="border-color:#2d6a4f;"></div>
+      <span style="color:#2d6a4f;font-size:11px;">→</span>
+    </div>
+    Weak entity / Composition
+  </div>
+  <div class="legend-item">
+    <div class="lg-line">
+      <div class="lg-dash" style="border-color:#7209b7;"></div>
+      <span style="color:#7209b7;font-size:11px;">→</span>
+    </div>
+    Zone ref
+  </div>
+</div>
+
+</div>
+
+<script>
+// FK_RELS: [fromAttrId, toAttrId, color, label, group]
+const FK_RELS = [
+  // ISA identity refs (red)
+  ['c-SENDER-UserID',       'c-USER-UserID',       '#9b2226', 'ISA', 'isa'],
+  ['c-FC-UserID',           'c-USER-UserID',       '#9b2226', 'ISA', 'isa'],
+  // Standard delivery order refs (blue)
+  ['c-DO-SenderID',         'c-SENDER-SenderID',   '#1a4da0', '', 'standard'],
+  ['c-DO-CourierID',        'c-FC-CourierID',      '#1a4da0', '', 'standard'],
+  ['c-DO-ParcelID',         'c-P-ParcelID',        '#1a4da0', '', 'standard'],
+  ['c-DO-PickupHubID',      'c-UH-HubID',          '#1a4da0', 'pickup', 'standard'],
+  ['c-DO-DropHubID',        'c-UH-HubID',          '#1a4da0', 'drop', 'standard'],
+  // Weak entity refs (green)
+  ['c-TM-OrderID',          'c-DO-OrderID',        '#2d6a4f', '', 'weak'],
+  ['c-TXN-OrderID',         'c-DO-OrderID',        '#2d6a4f', '', 'weak'],
+  ['c-CL-CourierID',        'c-FC-CourierID',      '#2d6a4f', '', 'weak'],
+  ['c-CL-TransactionID',    'c-TXN-TransactionID', '#2d6a4f', '', 'weak'],
+  // Rating refs (orange)
+  ['c-R-OrderID',           'c-DO-OrderID',        '#e76f51', '', 'rating'],
+  ['c-R-RaterUserID',       'c-USER-UserID',       '#e76f51', '', 'rating'],
+  // Zone refs (purple)
+  ['c-SENDER-PreferredZoneID', 'c-Z-ZoneID',       '#7209b7', '', 'zone'],
+  ['c-FC-CurrentZoneID',    'c-Z-ZoneID',          '#7209b7', '', 'zone'],
+  ['c-UH-ZoneID',           'c-Z-ZoneID',          '#7209b7', '', 'zone'],
+  ['c-IM-ZoneID',           'c-Z-ZoneID',          '#7209b7', '', 'zone'],
+];
+
+let activeFilter = 'all';
+let hoverFromId = null;
+
+function filteredRelations() {
+  return FK_RELS.filter(([fromId, , , , group]) => {
+    const isMatchFilter = activeFilter === 'all' || group === activeFilter;
+    const isMatchHover = !hoverFromId || fromId === hoverFromId;
+    return isMatchFilter && isMatchHover;
+  });
+}
+
+function getBounds(id) {
+  const el = document.getElementById(id);
+  const sc = document.getElementById('schema');
+  if (!el || !sc) return null;
+  const er = el.getBoundingClientRect();
+  const sr = sc.getBoundingClientRect();
+  return {
+    left:   er.left   - sr.left,
+    right:  er.right  - sr.left,
+    top:    er.top    - sr.top,
+    bottom: er.bottom - sr.top,
+    cx: (er.left + er.right)  / 2 - sr.left,
+    cy: (er.top  + er.bottom) / 2 - sr.top,
+  };
+}
+
+function render() {
+  const sc  = document.getElementById('schema');
+  const svg = document.getElementById('svg-lines');
+  if (!sc || !svg) return;
+
+  const W = sc.scrollWidth;
+  const H = sc.scrollHeight;
+  svg.setAttribute('width', W);
+  svg.setAttribute('height', H);
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  svg.innerHTML = '';
+
+  // ── arrow markers ──
+  const rels = filteredRelations();
+
+  const relData = rels
+    .map(([fromId, toId, clr, lbl, group]) => ({
+      fromId,
+      toId,
+      clr,
+      lbl,
+      group,
+      from: getBounds(fromId),
+      to: getBounds(toId),
+      sourceOffsetY: 0,
+      targetOffsetX: 0,
+      targetOffsetY: 0,
+      laneX: 0,
+      laneSide: 'right',
+      dir: 'flat',
+      entrySide: 'right',
+    }))
+    .filter(rel => rel.from && rel.to);
+
+  const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+  const uniqueColors = [...new Set(relData.map(r => r.clr))];
+  uniqueColors.forEach(clr => {
+    const mid = 'arr' + clr.replace('#','');
+    const marker = document.createElementNS('http://www.w3.org/2000/svg', 'marker');
+    marker.setAttribute('id', mid);
+    marker.setAttribute('markerWidth',  '7');
+    marker.setAttribute('markerHeight', '7');
+    marker.setAttribute('refX',  '6.5');
+    marker.setAttribute('refY',  '3.5');
+    marker.setAttribute('orient', 'auto');
+    marker.innerHTML = `<polygon points="0 0, 7 3.5, 0 7" fill="${clr}" opacity="0.85"/>`;
+    defs.appendChild(marker);
+  });
+  svg.appendChild(defs);
+
+  // find max right and min left edges of all attr-rows
+  let maxRight = 0;
+  let minLeft = Number.POSITIVE_INFINITY;
+  document.querySelectorAll('.attr-row').forEach(el => {
+    const er = el.getBoundingClientRect();
+    const sr = document.getElementById('schema').getBoundingClientRect();
+    maxRight = Math.max(maxRight, er.right - sr.left);
+    minLeft = Math.min(minLeft, er.left - sr.left);
+  });
+  if (!Number.isFinite(minLeft)) minLeft = 200;
+
+  // Fan out identical sources slightly so lines sharing the same FK cell do not stack.
+  const sourceSpread = new Map();
+  relData.forEach(rel => {
+    sourceSpread.set(rel.fromId, (sourceSpread.get(rel.fromId) || 0) + 1);
+  });
+
+  const sourceIndex = new Map();
+  relData.forEach(rel => {
+    const total = sourceSpread.get(rel.fromId) || 1;
+    const idx = sourceIndex.get(rel.fromId) || 0;
+    sourceIndex.set(rel.fromId, idx + 1);
+    rel.sourceOffsetY = total > 1 ? (idx - (total - 1) / 2) * 4 : 0;
+  });
+
+  // Split relations across left/right corridors to avoid right-side congestion.
+  const sortedByMid = [...relData].sort((a, b) => ((a.from.cy + a.to.cy) - (b.from.cy + b.to.cy)));
+  sortedByMid.forEach((rel, i) => {
+    rel.laneSide = i % 2 === 0 ? 'right' : 'left';
+  });
+
+  // Choose target entry side by relative vertical direction.
+  relData.forEach(rel => {
+    const dy = rel.to.cy - rel.from.cy;
+    if (dy < -14) {
+      rel.dir = 'up';
+      rel.entrySide = 'bottom';
+    } else if (dy > 14) {
+      rel.dir = 'down';
+      rel.entrySide = 'top';
+    } else {
+      rel.dir = 'flat';
+      rel.entrySide = rel.laneSide;
+    }
+  });
+
+  // Spread endpoints that enter the same target from the same side.
+  const targetSideGroups = new Map();
+  relData.forEach(rel => {
+    const key = rel.toId + '|' + rel.entrySide;
+    if (!targetSideGroups.has(key)) targetSideGroups.set(key, []);
+    targetSideGroups.get(key).push(rel);
+  });
+
+  targetSideGroups.forEach(group => {
+    group.sort((a, b) => a.from.cy - b.from.cy);
+    const step = 7;
+    const start = -((group.length - 1) * step) / 2;
+    group.forEach((rel, i) => {
+      if (rel.entrySide === 'right' || rel.entrySide === 'left') {
+        rel.targetOffsetY = start + i * step;
+      } else {
+        rel.targetOffsetX = start + i * step;
+      }
+    });
+  });
+
+  // Separate lanes by side + direction so both edges are utilized.
+  const by = (side, dir) => relData
+    .filter(rel => rel.laneSide === side && rel.dir === dir)
+    .sort((a, b) => a.from.cy - b.from.cy);
+
+  const rightUp = by('right', 'up');
+  const rightFlat = by('right', 'flat');
+  const rightDown = by('right', 'down');
+  const leftUp = by('left', 'up');
+  const leftFlat = by('left', 'flat');
+  const leftDown = by('left', 'down');
+
+  const laneStep = 13;
+  const rightNear = maxRight + 20;
+  const rightMid = maxRight + 92;
+  const rightFar = maxRight + 164;
+
+  const leftNear = Math.max(44, minLeft - 58);
+  const leftMid = Math.max(36, minLeft - 122);
+  const leftFar = Math.max(28, minLeft - 186);
+
+  rightUp.forEach((rel, i) => { rel.laneX = rightNear + i * laneStep; });
+  rightFlat.forEach((rel, i) => { rel.laneX = rightMid + i * laneStep; });
+  rightDown.forEach((rel, i) => { rel.laneX = rightFar + i * laneStep; });
+
+  leftUp.forEach((rel, i) => { rel.laneX = leftNear - i * laneStep; });
+  leftFlat.forEach((rel, i) => { rel.laneX = leftMid - i * laneStep; });
+  leftDown.forEach((rel, i) => { rel.laneX = leftFar - i * laneStep; });
+
+  // draw each relationship
+  relData.forEach(({ clr, lbl, from, to, sourceOffsetY, targetOffsetX, targetOffsetY, laneX, laneSide, entrySide }) => {
+    const markerId = 'arr' + clr.replace('#', '');
+
+    const x1 = laneSide === 'left' ? from.left : from.right;
+    const y1 = from.cy + sourceOffsetY;
+
+    let x4 = to.right + 1;
+    let y4 = to.cy;
+
+    if (entrySide === 'top') {
+      x4 = to.cx + targetOffsetX;
+      y4 = to.top - 1;
+    } else if (entrySide === 'bottom') {
+      x4 = to.cx + targetOffsetX;
+      y4 = to.bottom + 1;
+    } else if (entrySide === 'left') {
+      x4 = to.left - 1;
+      y4 = to.cy + targetOffsetY;
+    } else {
+      x4 = to.right + 1;
+      y4 = to.cy + targetOffsetY;
+    }
+
+    // draw a subtle dot at the FK cell start
+    const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    dot.setAttribute('cx', x1);
+    dot.setAttribute('cy', y1);
+    dot.setAttribute('r',  '2.5');
+    dot.setAttribute('fill', clr);
+    dot.setAttribute('opacity', '0.7');
+    svg.appendChild(dot);
+
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    let d;
+    if (entrySide === 'top') {
+      d = `M ${x1} ${y1} H ${laneX} V ${y4 - 8} H ${x4} V ${y4}`;
+    } else if (entrySide === 'bottom') {
+      d = `M ${x1} ${y1} H ${laneX} V ${y4 + 8} H ${x4} V ${y4}`;
+    } else {
+      d = `M ${x1} ${y1} H ${laneX} V ${y4} H ${x4}`;
+    }
+    path.setAttribute('d', d);
+    path.setAttribute('fill', 'none');
+    path.setAttribute('stroke', clr);
+    path.setAttribute('stroke-width', hoverFromId ? '1.95' : '1.35');
+    path.setAttribute('stroke-dasharray', '5 3');
+    path.setAttribute('opacity', hoverFromId ? '0.9' : '0.63');
+    path.setAttribute('marker-end', `url(#${markerId})`);
+    svg.appendChild(path);
+
+    // optional label
+    if (lbl) {
+      const mid_x = laneX + 3;
+      const mid_y = (y1 + y4) / 2;
+      const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      txt.setAttribute('x', mid_x);
+      txt.setAttribute('y', mid_y);
+      txt.setAttribute('font-size', '8');
+      txt.setAttribute('font-family', 'JetBrains Mono, monospace');
+      txt.setAttribute('fill', clr);
+      txt.setAttribute('opacity', '0.8');
+      txt.setAttribute('dominant-baseline', 'middle');
+      txt.textContent = lbl;
+      svg.appendChild(txt);
+    }
+  });
+}
+
+function setFilter(filter) {
+  activeFilter = filter;
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.filter === filter);
+  });
+  render();
+}
+
+function setupInteraction() {
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => setFilter(btn.dataset.filter));
+  });
+
+  document.querySelectorAll('.attr-cell.fk').forEach(cell => {
+    cell.addEventListener('mouseenter', () => {
+      hoverFromId = cell.id;
+      document.querySelectorAll('.attr-cell.fk').forEach(c => c.classList.remove('fk-hover'));
+      cell.classList.add('fk-hover');
+      render();
+    });
+
+    cell.addEventListener('mouseleave', () => {
+      hoverFromId = null;
+      cell.classList.remove('fk-hover');
+      render();
+    });
+  });
+}
+
+// Run after layout settles
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => {
+    setupInteraction();
+    setTimeout(render, 150);
+  });
+} else {
+  setupInteraction();
+  setTimeout(render, 150);
+}
+window.addEventListener('resize', render);
+</script>
+</body>
+</html>
